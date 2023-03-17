@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tainted Canvas</title>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script type="module">
+        function getImg(url) {
+            return new Promise(function (resolve, reject) {
+                const img = new Image();
+                // img.crossOrigin  = 'anonymous'
+                img.addEventListener(
+                    "load",
+                    () => {
+                        resolve(img);
+                    },
+                    false
+                );
+                img.src = url;
+            })
+        }
+
+        const imgs = document.images
+        const img0 = await getImg('./avt.jpg') // same origin
+        const img1 = await getImg('https://ssshooter.com/blog-image/alu18.gif') // cors
+        const img2 = await getImg('https://image.api.playstation.com/trophy/np/NPWR13281_00_00A03E8F7ED2727FADE2548E45F2781D32F5D048F6/B81B1B7DBEB337F763D736123661E1D0E8B59FEE.PNG') // no cors
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img0, 0, 0, 50, 50)
+        ctx.drawImage(img1, 50, 0, 50, 50)
+        ctx.drawImage(img2, 100, 0, 50, 50)
+        const imageData = ctx.getImageData(0, 0, 150, 50)
+        // console.log(imageData)
+    </script>
+</body>
+
+</html>

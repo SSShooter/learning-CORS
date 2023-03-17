@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe test</title>
+    <style>
+        #avt {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post" action="https://example.com/results.json">
+        <label for="email">Enter your email: </label>
+        <input type="email" name="email" id="email" required>
+        <button type="submit">Subscribe</button>
+    </form>
+    <div>same origin</div>
+    <iframe id="sub" src="./sub.html"></iframe>
+    <div>cross origin</div>
+    <iframe id="xsub" src="http://localhost:3000/public/sub.html"></iframe>
+    <div>
+        <button onclick="postToSub()">post</button>
+    </div>
+
+    <!-- <iframe id="iframe" src="https://ssshooter.com"></iframe> -->
+    <!-- <img id="corimg" src="https://ssshooter.com/blog-image/alu18.gif" />
+    <img id="avt" src="./avt.jpg" /> -->
+    <script>
+        function postToSub() {
+            console.log('postToSub clicked')
+            // sub.contentWindow.postMessage('hello', 'http://127.0.0.1:3000')
+            xsub.contentWindow.postMessage({ jsondata: {}, 1: 'hello' }, 'http://localhost:3000')
+        }
+        window.addEventListener("message", (event) => {
+            console.log('main', event)
+            if (event.origin === 'http://localhost:3000') {
+                console.log('pass')
+            }
+        });
+    </script>
+</body>
+
+</html>
